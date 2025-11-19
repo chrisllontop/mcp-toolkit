@@ -103,6 +103,12 @@ impl Storage {
         projects.collect()
     }
 
+    pub fn delete_project(&self, id: &str) -> Result<()> {
+        let conn = self.conn.lock().unwrap();
+        conn.execute("DELETE FROM projects WHERE id = ?1", params![id])?;
+        Ok(())
+    }
+
     pub fn insert_mcp(&self, mcp: &Mcp) -> Result<()> {
         let conn = self.conn.lock().unwrap();
         let config_json = serde_json::to_string(&mcp.config).unwrap();

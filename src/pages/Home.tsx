@@ -35,6 +35,26 @@ function Home() {
     navigate(`/project/${project.id}`);
   };
 
+  const handleDelete = async (e: React.MouseEvent, projectId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Delete clicked for project:", projectId);
+
+    if (window.confirm("Are you sure you want to delete this project?")) {
+      console.log("User confirmed deletion");
+      try {
+        await api.deleteProject(projectId);
+        console.log("Project deleted successfully");
+        loadProjects();
+      } catch (error) {
+        console.error("Error deleting project:", error);
+        alert(`Error: ${error}`);
+      }
+    } else {
+      console.log("User cancelled deletion");
+    }
+  };
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
@@ -45,8 +65,20 @@ function Home() {
       <div>
         {projects.map((project) => (
           <div key={project.id} className="card" onClick={() => handleProjectClick(project)} style={{ cursor: "pointer" }}>
-            <h3>{project.name}</h3>
-            <p style={{ color: "#888", fontSize: 14 }}>{project.path}</p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <h3>{project.name}</h3>
+                <p style={{ color: "#888", fontSize: 14 }}>{project.path}</p>
+              </div>
+              <button
+                type="button"
+                className="danger"
+                onClick={(e) => handleDelete(e, project.id)}
+                style={{ marginLeft: 10 }}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>

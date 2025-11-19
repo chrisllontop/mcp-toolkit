@@ -2,10 +2,12 @@ mod bindings;
 mod commands;
 mod commands_import;
 mod import;
+mod mcp_protocol;
 mod mcps;
 mod models;
 mod projects;
 mod router;
+mod router_mcp;
 mod secrets;
 mod storage;
 
@@ -46,6 +48,7 @@ pub fn run() {
             commands::create_project,
             commands::list_projects,
             commands::detect_ai_config,
+            commands::delete_project,
             commands::create_mcp,
             commands::list_mcps,
             commands::update_mcp,
@@ -57,6 +60,7 @@ pub fn run() {
             commands::list_secrets,
             commands::get_recent_logs,
             commands::set_active_project,
+            commands::generate_mcp_config,
             commands_import::parse_mcp_json_command,
             commands_import::import_mcps_from_json,
         ])

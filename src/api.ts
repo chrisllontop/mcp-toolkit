@@ -64,6 +64,10 @@ export const api = {
     return await invoke("list_projects");
   },
 
+  async deleteProject(id: string): Promise<void> {
+    return await invoke("delete_project", { id });
+  },
+
   async detectAiConfig(projectPath: string): Promise<string | null> {
     return await invoke("detect_ai_config", { projectPath });
   },
@@ -126,6 +130,10 @@ export const api = {
 
   async importMcpsFromJson(jsonStr: string): Promise<Mcp[]> {
     return await invoke("import_mcps_from_json", { jsonStr });
+  },
+
+  async generateMcpConfig(projectId: string): Promise<string> {
+    return await invoke("generate_mcp_config", { projectId });
   },
 };
 

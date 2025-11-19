@@ -33,6 +33,7 @@ function App() {
           <Route path="/catalog" element={<McpCatalog />} />
           <Route path="/secrets" element={<Secrets />} />
           <Route path="/router" element={<RouterStatus />} />
+          <Route path="/router/:projectId" element={<RouterStatus />} />
         </Routes>
       </main>
     </div>

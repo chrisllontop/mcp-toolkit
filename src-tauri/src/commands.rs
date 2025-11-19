@@ -34,6 +34,15 @@ pub async fn detect_ai_config(
 }
 
 #[tauri::command]
+pub async fn delete_project(
+    id: String,
+    storage: tauri::State<'_, Arc<Storage>>,
+) -> Result<(), String> {
+    let manager = ProjectManager::new(&storage);
+    manager.delete_project(id)
+}
+
+#[tauri::command]
 pub async fn create_mcp(
     name: String,
     mcp_type: McpType,
@@ -142,4 +151,21 @@ pub async fn set_active_project(project_id: String) -> Result<(), String> {
         .await
         .map_err(|e| e.to_string())?;
     Ok(())
+}
+
+#[tauri::command]
+pub async fn generate_mcp_config(
+    _project_id: String,
+    _storage: tauri::State<'_, Arc<Storage>>,
+) -> Result<String, String> {
+    let config = serde_json::json!({
+        "mcpServers": {
+            "mcp-manager": {
+                "type": "http",
+                "url": "http://127.0.0.1:9876/mcp"
+            }
+        }
+    });
+
+    Ok(serde_json::to_string_pretty(&config).unwrap())
 }

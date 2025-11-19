@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { api, ProjectMcpBinding, Mcp, EnvVar } from "../api";
 
 function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [bindings, setBindings] = useState<ProjectMcpBinding[]>([]);
   const [allMcps, setAllMcps] = useState<Mcp[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -86,7 +87,12 @@ function ProjectDetail() {
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
         <h1>Project Configuration</h1>
-        <button onClick={() => setShowAddModal(true)}>Activate MCP</button>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button className="secondary" onClick={() => navigate(`/router/${id}`)}>
+            Generate Config
+          </button>
+          <button onClick={() => setShowAddModal(true)}>Activate MCP</button>
+        </div>
       </div>
 
       <div>

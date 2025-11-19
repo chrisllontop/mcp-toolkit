@@ -16,8 +16,11 @@ function McpCatalog() {
     setMcps(data);
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this MCP?")) return;
+  const handleDelete = async (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!window.confirm("Delete this MCP?")) return;
     try {
       await api.deleteMcp(id);
       loadMcps();
@@ -62,7 +65,7 @@ function McpCatalog() {
                 <h3>{mcp.name}</h3>
                 <span className="badge success">{mcp.mcp_type}</span>
               </div>
-              <button className="danger" onClick={() => handleDelete(mcp.id)}>Delete</button>
+              <button type="button" className="danger" onClick={(e) => handleDelete(e, mcp.id)}>Delete</button>
             </div>
           </div>
         ))}

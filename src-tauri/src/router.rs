@@ -1,11 +1,12 @@
 use crate::models::*;
+use crate::router_mcp::handle_mcp_jsonrpc;
 use crate::secrets::SecretManager;
 use crate::storage::Storage;
 use axum::{
-    extract::State,
+    extract::{Path, State},
     http::StatusCode,
     response::IntoResponse,
-    routing::{get, post},
+    routing::{delete, get, post},
     Json, Router,
 };
 use chrono::Utc;
@@ -16,9 +17,9 @@ use uuid::Uuid;
 
 #[derive(Clone)]
 pub struct McpRouterState {
-    storage: Arc<Storage>,
-    secret_manager: Arc<SecretManager>,
-    current_project_id: Arc<tokio::sync::RwLock<Option<String>>>,
+    pub storage: Arc<Storage>,
+    pub secret_manager: Arc<SecretManager>,
+    pub current_project_id: Arc<tokio::sync::RwLock<Option<String>>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -58,6 +59,10 @@ pub async fn start_router(storage: Arc<Storage>, secret_manager: Arc<SecretManag
         .route("/tools/list", get(list_tools))
         .route("/tools/call", post(call_tool))
         .route("/project/set", post(set_current_project))
+        .route("/mcp", post(handle_mcp_jsonrpc))
+        // API endpoints for CLI
+        .route("/api/projects", get(api_list_projects).post(api_create_project))
+        .route("/api/projects/:id", delete(api_delete_project))
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:9876")
@@ -242,6 +247,10 @@ async fn execute_mcp(mcp: &Mcp, env_vars: &[EnvVar], args: &serde_json::Value) -
     }
 }
 
+pub async fn execute_mcp_public(mcp: &Mcp, env_vars: &[EnvVar], args: &serde_json::Value) -> Result<serde_json::Value, String> {
+    execute_mcp(mcp, env_vars, args).await
+}
+
 async fn execute_docker_mcp(mcp: &Mcp, env_vars: &[EnvVar], args: &serde_json::Value) -> Result<serde_json::Value, String> {
     let image = mcp.config.docker_image.as_ref().ok_or("No docker image specified")?;
 
@@ -323,4 +332,67 @@ async fn set_current_project(
 ) -> impl IntoResponse {
     *state.current_project_id.write().await = Some(req.project_id);
     (StatusCode::OK, Json(serde_json::json!({"status": "ok"})))
+}
+
+// API handlers for CLI
+
+#[derive(Deserialize)]
+struct CreateProjectRequest {
+    name: String,
+    path: String,
+}
+
+async fn api_list_projects(State(state): State<McpRouterState>) -> impl IntoResponse {
+    match state.storage.get_projects() {
+        Ok(projects) => (StatusCode::OK, Json(projects)).into_response(),
+        Err(e) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(serde_json::json!({"error": e.to_string()})),
+        )
+            .into_response(),
+    }
+}
+
+async fn api_create_project(
+    State(state): State<McpRouterState>,
+    Json(req): Json<CreateProjectRequest>,
+) -> impl IntoResponse {
+    // Validate path exists
+    if !std::path::Path::new(&req.path).exists() {
+        return (
+            StatusCode::BAD_REQUEST,
+            Json(serde_json::json!({"error": "Path does not exist"})),
+        )
+            .into_response();
+    }
+
+    let project = Project {
+        id: Uuid::new_v4().to_string(),
+        name: req.name,
+        path: req.path,
+        created_at: Utc::now().to_rfc3339(),
+    };
+
+    match state.storage.insert_project(&project) {
+        Ok(_) => (StatusCode::CREATED, Json(project)).into_response(),
+        Err(e) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(serde_json::json!({"error": e.to_string()})),
+        )
+            .into_response(),
+    }
+}
+
+async fn api_delete_project(
+    State(state): State<McpRouterState>,
+    Path(id): Path<String>,
+) -> impl IntoResponse {
+    match state.storage.delete_project(&id) {
+        Ok(_) => (StatusCode::OK, Json(serde_json::json!({"status": "ok"}))).into_response(),
+        Err(e) => (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(serde_json::json!({"error": e.to_string()})),
+        )
+            .into_response(),
+    }
 }

@@ -36,6 +36,10 @@ impl<'a> ProjectManager<'a> {
         self.storage.get_projects().map_err(|e| e.to_string())
     }
 
+    pub fn delete_project(&self, id: String) -> Result<(), String> {
+        self.storage.delete_project(&id).map_err(|e| e.to_string())
+    }
+
     pub fn detect_ai_config(&self, project_path: &str) -> Option<String> {
         let config_files = vec![
             ".claude.json",
