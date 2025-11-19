@@ -1,5 +1,5 @@
 [workspace]
-members = ["src-tauri", "mcp-stdio"]
+members = ["packages/backend", "packages/mcp"]
 resolver = "2"
 
 [workspace.dependencies]

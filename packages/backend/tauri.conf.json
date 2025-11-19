@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "identifier": "com.mcp.manager",
   "build": {
-    "beforeDevCommand": "pnpm dev",
+    "beforeDevCommand": "cd packages/app && pnpm dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "pnpm build",
-    "frontendDist": "../dist"
+    "beforeBuildCommand": "cd packages/app && pnpm build",
+    "frontendDist": "../app/dist"
   },
   "bundle": {
     "active": true,
