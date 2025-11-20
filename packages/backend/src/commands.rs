@@ -134,35 +134,21 @@ pub async fn list_secrets(storage: tauri::State<'_, Arc<Storage>>) -> Result<Vec
 }
 
 #[tauri::command]
-pub async fn get_recent_logs(
-    limit: usize,
-    storage: tauri::State<'_, Arc<Storage>>,
-) -> Result<Vec<RouterLog>, String> {
-    storage.get_recent_logs(limit).map_err(|e| e.to_string())
-}
-
-#[tauri::command]
-pub async fn set_active_project(project_id: String) -> Result<(), String> {
-    let client = reqwest::Client::new();
-    client
-        .post("http://127.0.0.1:9876/project/set")
-        .json(&serde_json::json!({"project_id": project_id}))
-        .send()
-        .await
-        .map_err(|e| e.to_string())?;
-    Ok(())
-}
-
-#[tauri::command]
 pub async fn generate_mcp_config(
     _project_id: String,
-    _storage: tauri::State<'_, Arc<Storage>>,
+    storage: tauri::State<'_, Arc<Storage>>,
 ) -> Result<String, String> {
+    let app_dir = dirs::data_local_dir()
+        .ok_or("Could not find local data directory")?
+        .join("com.mcp.manager");
+
+    let mcp_stdio_path = app_dir.join("mcp-stdio");
+
     let config = serde_json::json!({
         "mcpServers": {
             "mcp-manager": {
-                "type": "http",
-                "url": "http://127.0.0.1:9876/mcp"
+                "command": mcp_stdio_path.to_str().unwrap(),
+                "args": []
             }
         }
     });

@@ -31,7 +31,6 @@ function Home() {
   };
 
   const handleProjectClick = (project: Project) => {
-    api.setActiveProject(project.id);
     navigate(`/project/${project.id}`);
   };
 

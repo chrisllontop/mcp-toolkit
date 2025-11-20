@@ -1,7 +1,7 @@
 {
-  "productName": "MCP Manager",
+  "productName": "MCP Toolkit",
   "version": "0.1.0",
-  "identifier": "com.mcp.manager",
+  "identifier": "com.chrisllontop.mcp-toolkit",
   "build": {
     "beforeDevCommand": "cd packages/app && pnpm dev",
     "devUrl": "http://localhost:1420",
@@ -22,7 +22,7 @@
   "app": {
     "windows": [
       {
-        "title": "MCP Manager",
+        "title": "MCP TOolkit",
         "width": 1200,
         "height": 800,
         "resizable": true,

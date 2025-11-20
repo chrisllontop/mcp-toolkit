@@ -56,3 +56,15 @@ pub struct Secret {
     pub key: String,
     pub created_at: String,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RouterLog {
+    pub id: String,
+    pub timestamp: String,
+    pub project_id: String,
+    pub mcp_id: String,
+    pub tool_name: String,
+    pub status: String,
+    pub duration_ms: i64,
+    pub error: Option<String>,
+}

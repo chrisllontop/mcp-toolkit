@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import ProjectDetail from "./pages/ProjectDetail";
 import McpCatalog from "./pages/McpCatalog";
 import Secrets from "./pages/Secrets";
-import RouterStatus from "./pages/RouterStatus";
 import "./App.css";
 
 function App() {
@@ -21,9 +20,6 @@ function App() {
           <li>
             <Link to="/secrets">Secrets</Link>
           </li>
-          <li>
-            <Link to="/router">Router Status</Link>
-          </li>
         </ul>
       </nav>
       <main className="content">
@@ -32,8 +28,6 @@ function App() {
           <Route path="/project/:id" element={<ProjectDetail />} />
           <Route path="/catalog" element={<McpCatalog />} />
           <Route path="/secrets" element={<Secrets />} />
-          <Route path="/router" element={<RouterStatus />} />
-          <Route path="/router/:projectId" element={<RouterStatus />} />
         </Routes>
       </main>
     </div>

@@ -63,20 +63,6 @@ impl Storage {
             [],
         )?;
 
-        conn.execute(
-            "CREATE TABLE IF NOT EXISTS router_logs (
-                id TEXT PRIMARY KEY,
-                timestamp TEXT NOT NULL,
-                project_id TEXT NOT NULL,
-                mcp_id TEXT NOT NULL,
-                tool_name TEXT NOT NULL,
-                status TEXT NOT NULL,
-                duration_ms INTEGER NOT NULL,
-                error TEXT
-            )",
-            [],
-        )?;
-
         Ok(())
     }
 
@@ -237,32 +223,5 @@ impl Storage {
         } else {
             Ok(None)
         }
-    }
-
-    pub fn insert_log(&self, log: &RouterLog) -> Result<()> {
-        let conn = self.conn.lock().unwrap();
-        conn.execute(
-            "INSERT INTO router_logs (id, timestamp, project_id, mcp_id, tool_name, status, duration_ms, error) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
-            params![log.id, log.timestamp, log.project_id, log.mcp_id, log.tool_name, log.status, log.duration_ms, log.error],
-        )?;
-        Ok(())
-    }
-
-    pub fn get_recent_logs(&self, limit: usize) -> Result<Vec<RouterLog>> {
-        let conn = self.conn.lock().unwrap();
-        let mut stmt = conn.prepare("SELECT id, timestamp, project_id, mcp_id, tool_name, status, duration_ms, error FROM router_logs ORDER BY timestamp DESC LIMIT ?1")?;
-        let logs = stmt.query_map(params![limit], |row| {
-            Ok(RouterLog {
-                id: row.get(0)?,
-                timestamp: row.get(1)?,
-                project_id: row.get(2)?,
-                mcp_id: row.get(3)?,
-                tool_name: row.get(4)?,
-                status: row.get(5)?,
-                duration_ms: row.get(6)?,
-                error: row.get(7)?,
-            })
-        })?;
-        logs.collect()
     }
 }

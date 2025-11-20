@@ -44,17 +44,6 @@ export interface Secret {
   created_at: string;
 }
 
-export interface RouterLog {
-  id: string;
-  timestamp: string;
-  project_id: string;
-  mcp_id: string;
-  tool_name: string;
-  status: string;
-  duration_ms: number;
-  error?: string;
-}
-
 export const api = {
   async createProject(name: string, path: string): Promise<Project> {
     return await invoke("create_project", { name, path });
@@ -114,14 +103,6 @@ export const api = {
 
   async listSecrets(): Promise<Secret[]> {
     return await invoke("list_secrets");
-  },
-
-  async getRecentLogs(limit: number): Promise<RouterLog[]> {
-    return await invoke("get_recent_logs", { limit });
-  },
-
-  async setActiveProject(projectId: string): Promise<void> {
-    return await invoke("set_active_project", { projectId });
   },
 
   async parseMcpJson(jsonStr: string): Promise<ImportPreview[]> {

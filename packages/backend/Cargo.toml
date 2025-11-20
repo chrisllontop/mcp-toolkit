@@ -1,10 +1,10 @@
 [package]
-name = "mcp-manager"
+name = "mcp-toolkit-backend"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "mcp_manager_lib"
+name = "mcp_toolkit_backend"
 crate-type = ["lib", "cdylib", "staticlib"]
 
 [build-dependencies]
@@ -20,11 +20,7 @@ rusqlite = { workspace = true }
 base64 = "0.22"
 uuid = { workspace = true }
 chrono = { workspace = true }
-reqwest = { workspace = true }
 aes-gcm = "0.10"
 rand = "0.8"
 dirs = "5.0"
-axum = "0.7"
-tower = "0.5"
-tower-http = { version = "0.6", features = ["cors"] }
 anyhow = { workspace = true }

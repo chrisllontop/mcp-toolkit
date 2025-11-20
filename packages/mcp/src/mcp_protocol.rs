@@ -63,13 +63,15 @@ pub struct InitializeResult {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ServerCapabilities {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub tools: Option<ToolsCapability>,
-    #[serde(default)]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub experimental: Option<JsonValue>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ToolsCapability {
+    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "listChanged")]
     pub list_changed: Option<bool>,
 }
