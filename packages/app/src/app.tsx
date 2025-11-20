@@ -1,10 +1,10 @@
 import { Routes, Route, Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import Home from "./pages/Home";
-import ProjectDetail from "./pages/ProjectDetail";
-import McpCatalog from "./pages/McpCatalog";
-import Secrets from "./pages/Secrets";
-import "./App.css";
+import Home from "./pages/home";
+import ProjectDetail from "./pages/project-detail";
+import McpCatalog from "./pages/mcp-catalog";
+import Secrets from "./pages/secrets";
+import "./app.css";
 
 function App() {
   return (
