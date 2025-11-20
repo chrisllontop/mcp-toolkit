@@ -7,6 +7,7 @@ mod models;
 mod projects;
 mod secrets;
 mod storage;
+mod utils;
 
 use secrets::{get_or_create_key, SecretManager};
 use storage::Storage;
@@ -17,6 +18,7 @@ use tauri::Manager;
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_clipboard_manager::init())
         .setup(|app| {
             // Use custom app directory: ~/Library/Application Support/MCP Toolkit
             let mut app_dir = dirs::data_local_dir().expect("Could not find data directory");
@@ -49,6 +51,7 @@ pub fn run() {
             commands::save_secret,
             commands::list_secrets,
             commands::generate_mcp_config,
+            commands::copy_mcp_config,
             commands_import::parse_mcp_json_command,
             commands_import::import_mcps_from_json,
         ])

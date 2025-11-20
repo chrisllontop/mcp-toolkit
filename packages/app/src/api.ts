@@ -116,6 +116,10 @@ export const api = {
   async generateMcpConfig(projectId: string): Promise<string> {
     return await invoke("generate_mcp_config", { projectId });
   },
+
+  async copyMcpConfig(): Promise<string> {
+    return await invoke("copy_mcp_config");
+  },
 };
 
 export interface ImportPreview {

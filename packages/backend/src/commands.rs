@@ -4,8 +4,10 @@ use crate::models::*;
 use crate::projects::ProjectManager;
 use crate::secrets::SecretManager;
 use crate::storage::Storage;
+use crate::utils;
 use chrono::Utc;
 use std::sync::Arc;
+use tauri_plugin_clipboard_manager::ClipboardExt;
 use uuid::Uuid;
 
 #[tauri::command]
@@ -158,4 +160,17 @@ pub async fn generate_mcp_config(
     });
 
     Ok(serde_json::to_string_pretty(&config).unwrap())
+}
+
+#[tauri::command]
+pub async fn copy_mcp_config(app: tauri::AppHandle) -> Result<String, String> {
+    // Generate the MCP configuration JSON
+    let config_json = utils::generate_mcp_config()?;
+
+    // Write to clipboard using the clipboard plugin
+    app.clipboard()
+        .write_text(&config_json)
+        .map_err(|e| format!("Failed to copy to clipboard: {}", e))?;
+
+    Ok("Configuration copied to clipboard successfully".to_string())
 }

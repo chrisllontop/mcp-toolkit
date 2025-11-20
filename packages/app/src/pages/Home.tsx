@@ -54,11 +54,23 @@ function Home() {
     }
   };
 
+  const handleCopyConfig = async () => {
+    try {
+      const message = await api.copyMcpConfig();
+      alert(message);
+    } catch (error) {
+      alert(`Error: ${error}`);
+    }
+  };
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
         <h1>Projects</h1>
-        <button onClick={() => setShowModal(true)}>Add Project</button>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button onClick={handleCopyConfig}>Copy Config</button>
+          <button onClick={() => setShowModal(true)}>Add Project</button>
+        </div>
       </div>
 
       <div>

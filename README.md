@@ -49,7 +49,7 @@ Add MCP Toolkit to your AI tool's configuration. The command path varies by plat
 {
   "mcpServers": {
     "mcp-toolkit": {
-      "command": "/Applications/MCP Toolkit.app/Contents/MacOS/mcp-stdio",
+      "command": "/Applications/MCP Toolkit.app/Contents/MacOS/mcp-toolkit",
       "args": []
     }
   }
@@ -61,7 +61,7 @@ Add MCP Toolkit to your AI tool's configuration. The command path varies by plat
 {
   "mcpServers": {
     "mcp-toolkit": {
-      "command": "C:\\Users\\YourUsername\\AppData\\Local\\MCP Toolkit\\mcp-stdio.exe",
+      "command": "C:\\Users\\YourUsername\\AppData\\Local\\MCP Toolkit\\mcp-toolkit.exe",
       "args": []
     }
   }
@@ -73,7 +73,7 @@ Add MCP Toolkit to your AI tool's configuration. The command path varies by plat
 {
   "mcpServers": {
     "mcp-toolkit": {
-      "command": "/home/yourusername/.local/share/MCP Toolkit/mcp-stdio",
+      "command": "/home/yourusername/.local/share/MCP Toolkit/mcp-toolkit",
       "args": []
     }
   }
