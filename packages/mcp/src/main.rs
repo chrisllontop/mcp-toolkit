@@ -14,7 +14,14 @@ use storage::Storage;
 
 fn main() {
     // Initialize secret manager
-    let key = get_or_create_key();
+    let key = match get_or_create_key() {
+        Ok(k) => k,
+        Err(e) => {
+            eprintln!("Failed to initialize encryption key from OS keychain: {}", e);
+            eprintln!("Please ensure keychain access is available.");
+            std::process::exit(1);
+        }
+    };
     let secret_manager = SecretManager::new(&key);
 
     // Initialize storage

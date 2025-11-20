@@ -3,6 +3,7 @@ use aes_gcm::{
     Aes256Gcm, Nonce,
 };
 use base64::{engine::general_purpose, Engine as _};
+use keyring::Entry;
 use rand::RngCore;
 
 const NONCE_SIZE: usize = 12;
@@ -54,22 +55,38 @@ impl SecretManager {
     }
 }
 
-pub fn get_or_create_key() -> [u8; 32] {
-    let key_path = dirs::config_dir()
-        .unwrap()
-        .join("mcp-manager")
-        .join(".key");
+pub fn get_or_create_key() -> Result<[u8; 32], String> {
+    let entry = Entry::new("mcp-toolkit", "master-encryption-key")
+        .map_err(|e| format!("Failed to access OS keychain: {}", e))?;
 
-    if key_path.exists() {
-        let key_data = std::fs::read(&key_path).unwrap();
-        let mut key = [0u8; 32];
-        key.copy_from_slice(&key_data[..32]);
-        key
-    } else {
-        let mut key = [0u8; 32];
-        OsRng.fill_bytes(&mut key);
-        std::fs::create_dir_all(key_path.parent().unwrap()).unwrap();
-        std::fs::write(&key_path, &key).unwrap();
-        key
+    match entry.get_password() {
+        Ok(password) => {
+            // Key exists in keychain, decode it
+            let bytes = general_purpose::STANDARD
+                .decode(&password)
+                .map_err(|e| format!("Failed to decode key from keychain: {}", e))?;
+
+            if bytes.len() != 32 {
+                return Err("Invalid key length in keychain".to_string());
+            }
+
+            let mut key = [0u8; 32];
+            key.copy_from_slice(&bytes);
+            Ok(key)
+        }
+        Err(keyring::Error::NoEntry) => {
+            // Generate new key
+            let mut key = [0u8; 32];
+            OsRng.fill_bytes(&mut key);
+
+            // Store in keychain
+            let encoded = general_purpose::STANDARD.encode(&key);
+            entry
+                .set_password(&encoded)
+                .map_err(|e| format!("Failed to store key in OS keychain: {}", e))?;
+
+            Ok(key)
+        }
+        Err(e) => Err(format!("OS keychain error: {}", e)),
     }
 }

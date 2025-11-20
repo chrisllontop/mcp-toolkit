@@ -25,7 +25,8 @@ pub fn run() {
             let db_path = app_dir.join("mcp_manager.db");
 
             let storage = Arc::new(Storage::new(db_path.to_str().unwrap()).unwrap());
-            let key = get_or_create_key();
+            let key = get_or_create_key()
+                .expect("Failed to initialize encryption key from OS keychain. Please ensure keychain access is available.");
             let secret_manager = Arc::new(SecretManager::new(&key));
 
             app.manage(storage.clone());

@@ -16,6 +16,7 @@ dirs = "5.0"
 aes-gcm = "0.10"
 base64 = "0.22"
 rand = "0.8"
+keyring = "2.3"
 
 [[bin]]
 name = "mcp-toolkit"
