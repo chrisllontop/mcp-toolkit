@@ -1,167 +1,167 @@
 # MCP Toolkit - Test Suite
 
-## Ubicación en Monorepo
+## Monorepo Location
 
-Este paquete contiene todas las pruebas end-to-end para MCP Toolkit, organizado como parte del monorepo con pnpm.
+This package contains all end-to-end tests for MCP Toolkit, organized as part of the pnpm monorepo.
 
 ```
 packages/
-├── app/          # Aplicación frontend
-├── backend/      # Backend Tauri
-├── mcp/          # Librería MCP
-└── tests/        # 👈 Pruebas E2E (este paquete)
+├── app/          # Frontend application
+├── backend/      # Tauri Backend
+├── mcp/          # MCP Library
+└── tests/        # 👈 E2E Tests (this package)
 ```
 
-## Instalación
+## Installation
 
-Desde la raíz del proyecto:
+From the project root:
 
 ```bash
-# Instalar todas las dependencias del monorepo
+# Install all monorepo dependencies
 pnpm install
 
-# Instalar navegadores de Playwright
+# Install Playwright browsers
 cd packages/tests
 pnpm exec playwright install chromium
 ```
 
-## Ejecución de Pruebas
+## Running Tests
 
-### Opción 1: Desde la raíz del proyecto
+### Option 1: From project root
 
 ```bash
-# Ejecutar todas las pruebas
+# Run all tests
 pnpm test -F @mcp-toolkit/tests
 
-# Modo UI interactivo
+# Interactive UI mode
 pnpm test:ui -F @mcp-toolkit/tests
 
-# Con navegador visible
+# Headed mode (visible browser)
 pnpm test:headed -F @mcp-toolkit/tests
 
-# Ver reporte
+# View report
 pnpm test:report -F @mcp-toolkit/tests
 ```
 
-### Opción 2: Desde packages/tests
+### Option 2: From packages/tests
 
 ```bash
 cd packages/tests
 
-# Ejecutar todas las pruebas
+# Run all tests
 pnpm test
 
-# Modo UI interactivo (recomendado)
+# Interactive UI mode (recommended)
 pnpm test:ui
 
-# Con navegador visible
+# Headed mode (visible browser)
 pnpm test:headed
 
-# Modo debug
+# Debug mode
 pnpm test:debug
 
-# Ver reporte HTML
+# View HTML report
 pnpm test:report
 ```
 
-## Prerequisitos
+## Prerequisites
 
-**Antes de ejecutar las pruebas, el servidor de desarrollo debe estar corriendo:**
+**Before running tests, the development server must be running:**
 
 ```bash
-# Desde la raíz del proyecto
+# From project root
 pnpm dev
 ```
 
-Esto iniciará el servidor Tauri en `http://localhost:1420`. Las pruebas se conectarán automáticamente.
+This will start the Tauri server at `http://localhost:1420`. Tests will connect automatically.
 
-## Estructura de Pruebas
+## Test Structure
 
 ```
 packages/tests/
-├── package.json              # Dependencias del paquete
-├── playwright.config.ts      # Configuración de Playwright
-├── generate-report.ts        # Generador de reportes
-├── README.md                 # Esta documentación
-├── e2e/                      # Pruebas end-to-end
-│   ├── 01-projects.spec.ts       # Gestión de proyectos (8 tests)
-│   ├── 02-mcp-catalog.spec.ts    # Catálogo MCP (12 tests) ⭐ CLAVE
-│   ├── 03-bindings.spec.ts       # Bindings proyecto-MCP (8 tests)
-│   ├── 04-secrets.spec.ts        # Gestión de secretos (11 tests)
-│   └── 05-integration.spec.ts    # Workflows completos (4 tests)
-└── test-configs/             # Configuraciones de prueba
-    ├── standard-binary.json      # ✅ Debería funcionar
-    ├── npx-based.json            # 🔍 Verificar soporte
-    ├── uv-python.json            # 🔍 Verificar soporte
-    ├── docker-based.json         # ⚠️ Soporte parcial
-    ├── http-based.json           # ⚠️ Soporte parcial
-    ├── complex-nested.json       # ❌ Probablemente no soportado
-    ├── alternative-fields.json   # ❌ Probablemente no soportado
-    ├── multiple-servers.json     # ✅ Debería funcionar
-    ├── minimal-config.json       # ✅ Debería funcionar
-    └── invalid-config.json       # ❌ Debe fallar
+├── package.json              # Package dependencies
+├── playwright.config.ts      # Playwright configuration
+├── generate-report.ts        # Report generator
+├── README.md                 # This documentation
+├── e2e/                      # End-to-end tests
+│   ├── 01-projects.spec.ts       # Project management (8 tests)
+│   ├── 02-mcp-catalog.spec.ts    # MCP Catalog (12 tests) ⭐ KEY
+│   ├── 03-bindings.spec.ts       # Project-MCP Bindings (8 tests)
+│   ├── 04-secrets.spec.ts        # Secrets management (11 tests)
+│   └── 05-integration.spec.ts    # Complete workflows (4 tests)
+└── test-configs/             # Test configurations
+    ├── standard-binary.json      # ✅ Should work
+    ├── npx-based.json            # 🔍 Verify support
+    ├── uv-python.json            # 🔍 Verify support
+    ├── docker-based.json         # ⚠️ Partial support
+    ├── http-based.json           # ⚠️ Partial support
+    ├── complex-nested.json       # ❌ Likely not supported
+    ├── alternative-fields.json   # ❌ Likely not supported
+    ├── multiple-servers.json     # ✅ Should work
+    ├── minimal-config.json       # ✅ Should work
+    └── invalid-config.json       # ❌ Should fail
 ```
 
-## Pruebas Incluidas
+## Included Tests
 
-### Total: 43 pruebas automatizadas
+### Total: 43 automated tests
 
-| Archivo | Pruebas | Descripción |
+| File | Tests | Description |
 |---------|---------|-------------|
-| `01-projects.spec.ts` | 8 | Crear, listar, eliminar proyectos |
-| `02-mcp-catalog.spec.ts` | 12 | **Importar configuraciones MCP** ⭐ |
-| `03-bindings.spec.ts` | 8 | Activar MCPs, configurar overrides |
-| `04-secrets.spec.ts` | 11 | Crear y gestionar secretos |
-| `05-integration.spec.ts` | 4 | Flujos de trabajo completos |
+| `01-projects.spec.ts` | 8 | Create, list, delete projects |
+| `02-mcp-catalog.spec.ts` | 12 | **Import MCP configurations** ⭐ |
+| `03-bindings.spec.ts` | 8 | Activate MCPs, configure overrides |
+| `04-secrets.spec.ts` | 11 | Create and manage secrets |
+| `05-integration.spec.ts` | 4 | Complete workflows |
 
-## Objetivo Principal: Identificar Configuraciones No Soportadas
+## Main Objective: Identify Unsupported Configurations
 
-El archivo **`02-mcp-catalog.spec.ts`** es el más importante para descubrir qué formatos de configuración MCP están soportados.
+The **`02-mcp-catalog.spec.ts`** file is the most important for discovering which MCP configuration formats are supported.
 
-### Durante la ejecución, verás en consola:
+### During execution, you will see in the console:
 
 ```
 ✅ Standard Binary MCP: SUPPORTED
 ❌ Alternative field names: NOT SUPPORTED
-⚠️ Docker MCP: PARTIAL (solo parsing)
+⚠️ Docker MCP: PARTIAL (parsing only)
 🔍 NPX-based MCP: Testing...
 ```
 
-### Resultados Esperados:
+### Expected Results:
 
-**✅ Soportados:**
-- Configuraciones binarias estándar (`command` + `args` + `env`)
-- Importación múltiple de servidores
-- Configuraciones mínimas
+**✅ Supported:**
+- Standard binary configurations (`command` + `args` + `env`)
+- Multiple server import
+- Minimal configurations
 
-**⚠️ Soporte Parcial:**
-- Docker MCPs (se importan pero la ejecución puede no estar implementada)
-- HTTP MCPs (se importan pero la ejecución puede no estar implementada)
+**⚠️ Partial Support:**
+- Docker MCPs (imported but execution might not be implemented)
+- HTTP MCPs (imported but execution might not be implemented)
 
-**❌ Probablemente No Soportados:**
-- Nombres de campos alternativos (`executable`, `arguments`, `environment`)
-- Configuraciones complejas anidadas (`transport`, `initializationOptions`)
-- Formatos no estándar
+**❌ Likely Not Supported:**
+- Alternative field names (`executable`, `arguments`, `environment`)
+- Complex nested configurations (`transport`, `initializationOptions`)
+- Non-standard formats
 
-## Comandos Útiles
+## Useful Commands
 
 ```bash
-# Ejecutar prueba específica
+# Run specific test
 pnpm exec playwright test e2e/02-mcp-catalog.spec.ts
 
-# Ejecutar con filtro de nombre
+# Run with name filter
 pnpm exec playwright test --grep "import NPX"
 
-# Ver reporte de última ejecución
+# View last run report
 pnpm test:report
 
-# Generar reporte de soporte
+# Generate support report
 pnpm report
 ```
 
-## Integración con Scripts del Proyecto
+## Integration with Project Scripts
 
-Puedes añadir estos scripts al `package.json` raíz:
+You can add these scripts to the root `package.json`:
 
 ```json
 {
@@ -172,23 +172,23 @@ Puedes añadir estos scripts al `package.json` raíz:
 }
 ```
 
-Luego ejecutar desde la raíz:
+Then run from root:
 
 ```bash
 pnpm test
 pnpm test:ui
 ```
 
-## Resultados de las Pruebas
+## Test Results
 
-Después de ejecutar las pruebas, encontrarás:
+After running tests, you will find:
 
-- **Reporte HTML**: `packages/tests/test-results/html-report/`
-- **Screenshots**: Capturas de pantalla de fallos
-- **Videos**: Grabaciones de pruebas fallidas
+- **HTML Report**: `packages/tests/test-results/html-report/`
+- **Screenshots**: Screenshots of failures
+- **Videos**: Recordings of failed tests
 - **JSON**: `packages/tests/test-results/results.json`
 
-## Configuración de CI/CD
+## CI/CD Configuration
 
 ### GitHub Actions
 
@@ -233,7 +233,7 @@ jobs:
 
 ### Error: "Cannot connect to localhost:1420"
 
-**Solución:** Asegúrate de que el servidor dev esté corriendo:
+**Solution:** Ensure dev server is running:
 
 ```bash
 pnpm dev
@@ -241,60 +241,60 @@ pnpm dev
 
 ### Error: "Cannot find module '@playwright/test'"
 
-**Solución:** Instala las dependencias:
+**Solution:** Install dependencies:
 
 ```bash
 pnpm install
 ```
 
-### Los tests fallan aleatoriamente
+### Tests fail randomly
 
-**Solución:** 
-1. Puede haber conflictos de estado de base de datos
-2. Aumenta timeouts en `playwright.config.ts`
-3. Ejecuta pruebas individualmente para debug
+**Solution:** 
+1. There might be database state conflicts
+2. Increase timeouts in `playwright.config.ts`
+3. Run tests individually for debugging
 
 ### __dirname is not defined
 
-Esto es normal en módulos ES. Las pruebas funcionarán correctamente cuando se ejecuten con Playwright, que maneja esto automáticamente.
+This is normal in ES modules. Tests will work correctly when run with Playwright, which handles this automatically.
 
-## Añadir Nuevas Pruebas
+## Adding New Tests
 
-1. Crear archivo en `packages/tests/e2e/`
-2. Seguir el patrón de los archivos existentes
-3. Usar `test.describe()` y `test()`
-4. Añadir configuraciones de prueba en `test-configs/` si es necesario
+1. Create file in `packages/tests/e2e/`
+2. Follow existing file pattern
+3. Use `test.describe()` and `test()`
+4. Add test configurations in `test-configs/` if necessary
 
-Ejemplo:
+Example:
 
 ```typescript
 import { test, expect } from '@playwright/test';
 
-test.describe('Nueva Funcionalidad', () => {
+test.describe('New Functionality', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
 
-  test('debe hacer algo', async ({ page }) => {
-    // Tu prueba aquí
+  test('should do something', async ({ page }) => {
+    // Your test here
   });
 });
 ```
 
-## Soporte
+## Support
 
-Para problemas con las pruebas:
+For issues with tests:
 
-1. Revisa `test-results/html-report` para detalles visuales
-2. Examina la salida de consola para mensajes de soporte
-3. Ejecuta en modo `--debug` para depuración paso a paso
-4. Revisa screenshots y videos de fallos
+1. Check `test-results/html-report` for visual details
+2. Examine console output for support messages
+3. Run in `--debug` mode for step-by-step debugging
+4. Check screenshots and videos of failures
 
-## Contribuir
+## Contributing
 
-Al añadir nuevas pruebas:
+When adding new tests:
 
-1. Sigue las convenciones de nombres existentes
-2. Añade logs de consola para descubrimientos importantes
-3. Documenta comportamiento esperado vs actual
-4. Actualiza esta documentación con nuevos hallazgos
+1. Follow existing naming conventions
+2. Add console logs for important discoveries
+3. Document expected vs actual behavior
+4. Update this documentation with new findings
