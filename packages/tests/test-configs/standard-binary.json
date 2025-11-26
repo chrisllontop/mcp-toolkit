@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "test-binary-server": {
+      "command": "/usr/bin/echo",
+      "args": ["test"],
+      "env": {
+        "TEST_VAR": "test_value",
+        "API_KEY": "secret_key_123"
+      }
+    }
+  }
+}

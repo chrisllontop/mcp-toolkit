@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "minimal-server": {
+      "command": "/bin/sh"
+    }
+  }
+}

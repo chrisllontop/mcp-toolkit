@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "test-docker-server": {
+      "docker": "mcp-server-image:latest",
+      "args": ["--port", "8080"],
+      "env": {
+        "DOCKER_API_VERSION": "1.41",
+        "AUTH_TOKEN": "docker_secret"
+      }
+    }
+  }
+}

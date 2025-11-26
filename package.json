@@ -5,7 +5,8 @@
   "scripts": {
     "tauri": "tauri",
     "dev": "tauri dev --config packages/backend/tauri.conf.json",
-    "build": "tauri build --config packages/backend/tauri.conf.json"
+    "build": "tauri build --config packages/backend/tauri.conf.json",
+    "test": "pnpm -r --parallel test"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.1.0"

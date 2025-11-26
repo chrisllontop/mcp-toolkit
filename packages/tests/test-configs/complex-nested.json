@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "test-complex-server": {
+      "command": "/usr/bin/node",
+      "args": ["server.js"],
+      "transport": {
+        "type": "stdio",
+        "timeout": 5000
+      },
+      "initializationOptions": {
+        "workspaceFolders": ["/workspace"],
+        "settings": {
+          "logLevel": "debug"
+        }
+      },
+      "env": {
+        "CONFIG_PATH": "/etc/config.json"
+      }
+    }
+  }
+}

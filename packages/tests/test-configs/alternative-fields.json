@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "test-alternative-server": {
+      "executable": "/usr/bin/python3",
+      "arguments": ["server.py", "--port", "3000"],
+      "environment": {
+        "PYTHONUNBUFFERED": "1",
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}

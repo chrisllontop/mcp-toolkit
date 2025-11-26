@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "test-npx-server": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"],
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}

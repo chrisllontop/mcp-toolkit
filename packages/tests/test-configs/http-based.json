@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "test-http-server": {
+      "url": "http://localhost:8080/mcp",
+      "env": {
+        "AUTH_TOKEN": "http_secret_token",
+        "TIMEOUT": "30"
+      }
+    }
+  }
+}
