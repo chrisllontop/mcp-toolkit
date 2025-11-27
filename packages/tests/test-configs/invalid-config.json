@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "invalid-server": {
+      "invalidField": "should fail"
+    }
+  }
+}
