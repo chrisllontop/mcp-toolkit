@@ -106,6 +106,7 @@ If you'd like to contribute or run the project locally:
 pnpm install        # Install dependencies
 pnpm tauri dev      # Start development server
 pnpm tauri build    # Build for production
+pnpm test           # Run tests
 ```
 
 ---
